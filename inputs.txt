@@ -1,0 +1,23 @@
+admin----
+date
+time
+status
+description
+
+admin page----
+options- name,age,gender,therapies,reason
+editable- date,time
+email type- success,re-schedule,cancel,pending
+email-custom
+
+client----
+name
+age
+Phone number
+gender
+date
+time
+therapies
+reason
+
+

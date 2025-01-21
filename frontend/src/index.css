@@ -1,0 +1,87 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.nav-container{
+    backdrop-filter: blur(3px);
+    background: #c5c4c4a6;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    color: rgb(47, 47, 47);
+}
+
+.hero-section{
+    background:linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.6)),  url('https://www.revitalhealth.ca/client/976/media/img/366032/Naturopathy_1.jpeg') no-repeat center center/cover;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+:root{
+    --green: #48BB78;
+    --btns1: rgb(12, 55, 28);
+}
+.book{
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: all ease-in-out .3s;
+    background: var(--green);
+    border-radius: 5px;
+    color: white;
+    font: 1.1em sans-serif;
+}
+.book:hover{
+    background-color:#0abd19;
+}
+/* goto btns */
+.gotoBtn{
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--btns1);
+    color: white;
+    padding: 15px 30px;
+    border-radius: 50px;
+    margin: 20px;
+    font: 1.1em sans-serif;
+    transition: all ease-in-out .3s;
+    border: 2px solid var(--btns1);
+}
+.gotoBtn:hover{
+    background: transparent;;
+    color: var(--btns1);
+}
+.arrow-hidden{
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.arrow-visible{
+    opacity: 1;
+    transform: translateX(5px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+
+
+/* Add this CSS for the hover effect */
+.nav-link {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .nav-link::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: #4caf50; /* Green color for the underline */
+    transition: width 0.3s ease; /* Smooth animation */
+  }
+  
+  .nav-link:hover::after {
+    width: 100%; /* Expand the underline on hover */
+  }
+  
