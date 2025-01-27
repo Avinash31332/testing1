@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import GotoButton from "./GotoButton";
+import axios from "axios";
+import { useParams } from "react-router-dom";
 function About() {
+  const [data, setData] = useState({});
   const [width, setWidth] = useState(window.innerWidth);
   const [height, setHeight] = useState(window.innerHeight);
   const [small, setSmall] = useState(window.innerWidth <= 650);
@@ -10,6 +13,8 @@ function About() {
     setSmall(window.innerWidth <= 650);
   };
 
+  const { id } = useParams();
+
   useEffect(() => {
     window.addEventListener("resize", windowDimensions);
 
@@ -18,25 +23,26 @@ function About() {
       window.removeEventListener("resize", windowDimensions);
     };
   }, []);
+
+  useEffect(() => {
+    axios.get(`http://localhost:3000/api/admin/data/about`).then((res) => {
+      setData(res.data[0].about);
+    });
+  }, []);
   return (
     <div
       className={
         small
-          ? "p-4 py-[25px] flex-col text-center text-lg justify-center"
-          : "p-4 flex text-center text-xl py-[60px]"
+          ? "about-container p-7 py-[25px] flex-col text-center text-lg justify-center"
+          : "about-container p-7 flex text-center text-xl py-[60px]"
       }
     >
       <div className={small ? "w-full" : "w-3/4"}>
         <p className="uppercase">About</p>
-        <h1 className="font-medium font-sans text-3xl">
-          Anything Comes over here
-        </h1>
+        <h1 className="font-medium font-sans text-3xl">{data.aboutTitle}</h1>
       </div>
       <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum
-        molestiae sed porro voluptatem est nulla mollitia facilis aliquam optio.
-        Id quasi delectus repudiandae repellendus! Laudantium explicabo suscipit
-        quis illo sapiente.
+        {data.aboutDescription}
         <br />
         {small ? "" : <GotoButton title="Know More" />}
       </p>

@@ -1,35 +1,31 @@
-import express from 'express';
-import mongoose from 'mongoose';
-import appointmentModel from '../models/appointment.model.js';
+import express from "express";
+import mongoose from "mongoose";
+import appointmentModel from "../models/appointment.model.js";
 
-
-export const allAppointments= async(req,res)=>{
-  try{
-    const allAppointments= await appointmentModel.find();
-    if(!allAppointments){
+export const allAppointments = async (req, res) => {
+  try {
+    const allAppointments = await appointmentModel.find();
+    if (!allAppointments) {
       return res.status(200).json({
-        message: 'No appointment requests found'
-      })
+        message: "No appointment requests found",
+      });
     }
     return res.status(200).json({
       message: "success",
       count: allAppointments.length,
-      data: allAppointments
-    })
-  }
-  catch(err){
+      data: allAppointments,
+    });
+  } catch (err) {
     return res.status(500).json({
-      message: 'Error in fetching data',
-      error: err
-    })
+      message: "Error in fetching data",
+      error: err,
+    });
   }
-}
-
-
+};
 
 export const operationAppointment = async (req, res) => {
   try {
-    const { date, time, therapies,status } = req.body;
+    const { date, time, therapies, status } = req.body;
 
     // Validate ObjectId
     if (!mongoose.isValidObjectId(req.params.id)) {
@@ -58,15 +54,18 @@ export const operationAppointment = async (req, res) => {
       return res.status(404).json({ error: "Appointment not found" });
     }
 
-    return res.status(200).json({ 
-      message: "Appointment updated successfully", 
-      appointment: updatedAppointment 
+    return res.status(200).json({
+      message: "Appointment updated successfully",
+      appointment: updatedAppointment,
     });
   } catch (error) {
-    console.error(`Error updating appointment ${req.params.id}:`, error.message);
-    res.status(500).json({ 
-      error: "Error updating the appointment", 
-      details: error.message 
+    console.error(
+      `Error updating appointment ${req.params.id}:`,
+      error.message
+    );
+    res.status(500).json({
+      error: "Error updating the appointment",
+      details: error.message,
     });
   }
 };

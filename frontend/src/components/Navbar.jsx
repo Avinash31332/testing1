@@ -8,7 +8,9 @@ function Navbar() {
   return (
     <nav className="w-full flex justify-between items-center p-4 px-16 bg-white shadow-md sticky top-0 z-50">
       {/* Logo Section */}
-      <div className="logo text-2xl font-bold text-green-600">Logo</div>
+      <Link to={"/"}>
+        <div className="logo text-2xl font-bold text-green-600">Logo</div>
+      </Link>
 
       {/* Navigation Links for Larger Screens */}
       <div className="hidden sm:flex gap-6 text-lg items-center">

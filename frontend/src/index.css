@@ -40,7 +40,7 @@
     justify-content: center;
     background: var(--btns1);
     color: white;
-    padding: 15px 30px;
+    padding: 10px 30px;
     border-radius: 50px;
     margin: 20px;
     font: 1.1em sans-serif;
@@ -52,8 +52,8 @@
     color: var(--btns1);
 }
 .arrow-hidden{
-    opacity: 0;
-    transform: translateX(-10px);
+    opacity: 1;
+    transform: translateX(10px);
     transition: opacity 0.3s ease, transform 0.3s ease;
 }
 .arrow-visible{
@@ -85,3 +85,58 @@
     width: 100%; /* Expand the underline on hover */
   }
   
+
+  /* about container */
+  .about-container{
+  }
+
+
+  /* therapies */
+.therapy-box{
+    position: relative;
+}
+  .therapies-img{
+    background-size: contain;
+    background-position: center;
+    z-index: 100;
+    width: 100%;
+    height: 100%;
+}
+
+.therapy-up{
+    z-index: 200;
+}
+
+/* slider */
+
+/* Custom dots style */
+.slick-dots {
+    bottom: 10px;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .slick-dots li {
+    margin: 0 5px;
+  }
+  
+  .slick-dots li button {
+    width: 20px; /* Increased size of the dots */
+    height: 20px; /* Increased size of the dots */
+    border-radius: 50%;
+    background-color: #ccc;
+    opacity: 1;
+    transition: all 0.3s ease;
+  }
+  
+  .slick-dots li.slick-active button {
+    background-color: #c4c4c4;
+    transform: scale(1.3); /* Slightly increased size for active dot */
+  }
+  
+  .slick-dots li button:hover {
+    background-color: #858585;
+    transform: scale(1.1);
+  }
+  
+

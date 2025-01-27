@@ -7,9 +7,11 @@ import {
   faCalendar,
 } from "@fortawesome/free-solid-svg-icons";
 import Navbar from "../components/Navbar";
-import Test from "../components/test";
+import Test from "../components/Test";
 import HeroSection from "../components/HeroSection";
 import About from "../components/About";
+import Therapies from "./Therapies";
+import TherapiesSlider from "../components/TherapiesSlider";
 
 const Home = () => {
   return (
@@ -124,8 +126,9 @@ const Home = () => {
     //   </footer>
     // </div>
     <div>
-      <Navbar />
       <HeroSection />
+      <About />
+      <TherapiesSlider />
       <About />
     </div>
   );
