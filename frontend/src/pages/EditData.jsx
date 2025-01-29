@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 function EditData() {
   //isAdmin
-  const [isAdmin, setAdmin] = useState(false);
+  const [isAdmin, setAdmin] = useState(true);
 
   //screens sizes responsive
   const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 570);
@@ -39,15 +39,17 @@ function EditData() {
     window.addEventListener("resize", handleMidScreen);
   }, []);
 
-  const handleUpdate = () => {
-    const data = {
+  const handleUpdate = (e) => {
+    e.preventDefault();
+    const newData = {
       aboutTitle: aboutTitle,
       aboutDescription: aboutDescription,
     };
+    console.log(newData);
     axios
       .put(
         `http://localhost:3000/api/admin/data/about/67968600c96441fa12b9f6c7`,
-        data
+        newData
       )
       .then(() => {
         navigate("/");
@@ -57,7 +59,7 @@ function EditData() {
       });
   };
   return (
-    <div>
+    <form onSubmit={(e) => handleUpdate(e)}>
       <div className={`p-4`}>
         <p
           className={`my-2 font-medium text-zinc-800
@@ -104,7 +106,7 @@ function EditData() {
           >
             <label
               className={`text-lg font-medium text-zinc-600
-              ${isSmallScreen ? "text-center" : ""}`}
+              ${isSmallScreen ? "text-center flex gap-[5px]" : ""}`}
             >
               About Description <br />
               <label className="flex">
@@ -136,7 +138,7 @@ function EditData() {
         </div>
       </div>
       <button className="gotoBtn">Submit</button>
-    </div>
+    </form>
   );
 }
 

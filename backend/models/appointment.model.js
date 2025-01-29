@@ -5,13 +5,17 @@ const appointmentSchema = new mongoose.Schema({
   email: { type: String, required: true },
   phone: { type: Number, required: true },
   age: { type: Number, required: true },
-  therapies: { type: [String], required: true }, // Array of selected therapies
+  therapies: { type: [String] }, // Array of selected therapies
   date: { type: Date, required: true },
   time: { type: String, required: true },
-  status: { type: String, enum: ["Pending", "Accepted", "Rescheduled", "Cancelled"], default: "Pending" },
+  status: {
+    type: String,
+    enum: ["Pending", "Accepted", "Rescheduled", "Cancelled"],
+    default: "Pending",
+  },
   reason: { type: String },
 });
 
-const Appointment= mongoose.model("Appointment", appointmentSchema);
+const Appointment = mongoose.model("Appointment", appointmentSchema);
 
-export default Appointment
+export default Appointment;

@@ -29,7 +29,7 @@ function TherapyOperations() {
         setName(name);
         setDescription(description);
         setImage(image);
-        console.log(res.data.data);
+        // console.log(res.data.data);
       })
       .catch((err) => {
         console.log(err);
@@ -73,13 +73,13 @@ function TherapyOperations() {
     }
   };
   return (
-    <div className="h-screen w-full flex items-center justify-center bg-gray-100">
+    <div className="h-screen w-full flex flex-col items-center justify-center bg-gray-100">
       <form
         onSubmit={handleUpdate}
         className="flex justify-center items-center w-full"
       >
         <div
-          className={`flex flex-col items-center justify-center  border-2 border-gray-200 rounded-xl shadow-lg shadow-zinc-200 ${
+          className={`my-16 flex flex-col items-center justify-center  border-2 border-gray-200 rounded-xl shadow-lg shadow-zinc-200 ${
             small ? "w-full max-w-md p-4" : "w-2/4 lg:w-1/4 md:max-w-lg p-8"
           }`}
         >
@@ -139,7 +139,12 @@ function TherapyOperations() {
           </button>
         </div>
       </form>
-      <button></button>
+      <button
+        className="text-white text-lg py-2 px-16 bg-red-600 rounded"
+        onClick={(e) => handleDelete()}
+      >
+        Delete
+      </button>
     </div>
   );
 }

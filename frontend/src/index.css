@@ -87,9 +87,25 @@
   
 
   /* about container */
-  .about-container{
+  .about-container {
+    position: relative;
+    background-size: contain;
   }
-
+  
+  .about-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /* background: url('https://wallpapers.com/images/hd/seamless-background-293qr7wzwngues5k.jpg'); */
+    background: url('https://cdn.cliqstock.com/1646910954415887494/CLIQSTOCK_1646910954415887494_search.jpg');
+    background-size: contain;
+    opacity: 0.2; /* Set the desired opacity for the background */
+    z-index: -1; /* Ensure the background is behind the content */
+    background-color: rgba(0, 0, 0, 0.4); /* Add a dark overlay (black with 40% opacity) */
+  }
 
   /* therapies */
 .therapy-box{
@@ -108,7 +124,25 @@
 }
 
 /* slider */
+.slider-box{
+  position: relative;
+  background-size: contain;
+}
 
+.slider-box::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  /* background: url('https://wallpapers.com/images/hd/seamless-background-293qr7wzwngues5k.jpg'); */
+  background: url('https://wallpapers.com/images/hd/seamless-background-293qr7wzwngues5k.jpg');
+  background-size: contain;
+  opacity: 0.3; /* Set the desired opacity for the background */
+  z-index: -1; /* Ensure the background is behind the content */
+  background-color: rgba(0, 0, 0, 0.4); 
+}
 /* Custom dots style */
 .slick-dots {
     bottom: 10px;

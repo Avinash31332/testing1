@@ -7,9 +7,19 @@ import Therapy from "./Therapy";
 import { Link } from "react-router-dom";
 
 const TherapiesSlider = () => {
+  //screen size
+  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 650);
+
   const [therapies, setTherapies] = useState([]);
   const [visibleDots, setVisibleDots] = useState(5);
   const [currentSlide, setCurrentSlide] = useState(0);
+
+  //small screen size
+  useEffect(() => {
+    const handleResize = () => setIsSmallScreen(window.innerWidth <= 650);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   // Fetch data from the API
   useEffect(() => {
@@ -50,7 +60,13 @@ const TherapiesSlider = () => {
   return (
     <div className="p-4">
       <div className="flex items-center w-[95%] justify-between">
-        <h2 className="text-xl font-bold mb-4">Our Therapies</h2>
+        <h2
+          className={`text-zinc-800  font-bold  mb-4 ${
+            isSmallScreen ? "mx-2 text-xl" : "mx-16 text-3xl"
+          }`}
+        >
+          Our Therapies
+        </h2>
         <Link to={"/therapies"}>
           <button className="gotoBtn">Show All</button>
         </Link>

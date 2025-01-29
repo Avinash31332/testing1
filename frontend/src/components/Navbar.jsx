@@ -36,7 +36,9 @@ function Navbar() {
 
       {/* "Book" Button Always Visible */}
       <div className="flex items-center">
-        <Book />
+        <Link to={"/appointments/create"}>
+          <Book />
+        </Link>
         {/* Hamburger Menu Icon for Small Screens */}
         <div className="sm:hidden ml-4">
           <button

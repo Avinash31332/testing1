@@ -128,7 +128,9 @@ const Home = () => {
     <div>
       <HeroSection />
       <About />
+      <hr />
       <TherapiesSlider />
+      <hr className="my-8" />
       <About />
     </div>
   );

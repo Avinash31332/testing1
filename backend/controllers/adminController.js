@@ -23,6 +23,24 @@ export const allAppointments = async (req, res) => {
   }
 };
 
+export const singleAppointment = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const appointment = await appointmentModel.findById(id);
+    if (!appointment) {
+      return res.status(400).json({
+        message: "No appointment found with the id",
+      });
+    }
+    return res.status(200).json(appointment);
+  } catch (err) {
+    return res.status(500).json({
+      message: "Error in fetching data",
+      error: err,
+    });
+  }
+};
+
 export const operationAppointment = async (req, res) => {
   try {
     const { date, time, therapies, status } = req.body;

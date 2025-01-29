@@ -8,6 +8,7 @@ import {
 } from "../controllers/therapyController.js";
 import {
   allAppointments,
+  singleAppointment,
   operationAppointment,
 } from "../controllers/adminController.js";
 import adminModel from "../models/admin.model.js";
@@ -35,6 +36,8 @@ router.post("/update/:id", async (req, res) => {
 
 //appointments
 router.get("/appointments", allAppointments);
+
+router.get("/appointments/:id", singleAppointment);
 
 router.put("/appointments/:id", operationAppointment);
 

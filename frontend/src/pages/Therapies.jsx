@@ -14,7 +14,7 @@ function Therapies() {
   );
 
   //admin
-  const [isAdmin, setAdmin] = useState(true);
+  const [isAdmin, setAdmin] = useState(false);
 
   const { id } = useParams();
 

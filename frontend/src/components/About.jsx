@@ -31,17 +31,39 @@ function About() {
   }, []);
   return (
     <div
-      className={
-        small
-          ? "about-container p-7 py-[25px] flex-col text-center text-lg justify-center"
-          : "about-container p-7 flex text-center text-xl py-[60px]"
-      }
+      className={`
+        ${
+          small
+            ? "about-container py-16 p-7 flex-col text-center text-lg justify-center"
+            : "h-[100vh] about-container p-7 flex items-center text-center text-xl py-[60px]"
+        }`}
     >
-      <div className={small ? "w-full" : "w-3/4"}>
+      <div
+        className={
+          small
+            ? "w-full"
+            : "flex flex-col items-start px-4 w-1/2 justify-center"
+        }
+      >
         <p className="uppercase">About</p>
-        <h1 className="font-medium font-sans text-3xl">{data.aboutTitle}</h1>
+        <h1
+          className={` font-sans 
+          ${
+            small
+              ? "text-2xl font-medium"
+              : "text-4xl font-medium italic text-zinc-700"
+          }`}
+        >
+          {data.aboutTitle}
+        </h1>
       </div>
-      <p>
+      <p
+        className={
+          small
+            ? "py-2"
+            : `px-8 leading-[40px] w-1/2 font-medium text-2xl text-gray-700`
+        }
+      >
         {data.aboutDescription}
         <br />
         {small ? "" : <GotoButton title="Know More" />}
