@@ -13,7 +13,8 @@ const appointmentSchema = new mongoose.Schema({
     enum: ["Pending", "Accepted", "Rescheduled", "Cancelled"],
     default: "Pending",
   },
-  reason: { type: String },
+  description: { type: String },
+  emailType: { type: String },
 });
 
 const Appointment = mongoose.model("Appointment", appointmentSchema);

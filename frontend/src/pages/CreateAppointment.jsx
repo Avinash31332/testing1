@@ -64,7 +64,7 @@ const CreateAppointment = () => {
               value={formData[field]}
               onChange={handleChange}
               className="mt-1 p-2 w-full border rounded"
-              required={field !== "therapies" && field !== "reason"}
+              required={field !== "therapies" && field !== "description"}
             />
           </div>
         ))}

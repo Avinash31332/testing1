@@ -43,7 +43,7 @@ export const singleAppointment = async (req, res) => {
 
 export const operationAppointment = async (req, res) => {
   try {
-    const { date, time, therapies, status } = req.body;
+    const { date, time, therapies, status, emailType } = req.body;
 
     // Validate ObjectId
     if (!mongoose.isValidObjectId(req.params.id)) {
@@ -60,6 +60,7 @@ export const operationAppointment = async (req, res) => {
     if (date) updates.date = date;
     if (time) updates.time = time;
     if (therapies) updates.therapies = therapies;
+    if (emailType) updates.emailType = emailType;
 
     // Update the appointment
     const updatedAppointment = await appointmentModel.findByIdAndUpdate(

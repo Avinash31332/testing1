@@ -2,13 +2,16 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import Therapies from "./Therapies";
+import { useNavigate } from "react-router-dom";
 
 function AppointmentOperations() {
   const [appointment, setAppointment] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [custom, setCustom] = useState(false);
+  const [custom, setCustom] = useState("");
+  const [emailType, setEmailType] = useState("");
   const { id } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     setLoading(true);
@@ -17,7 +20,6 @@ function AppointmentOperations() {
       .then((res) => {
         setAppointment(res.data);
         setLoading(false);
-        console.log(res.data);
       })
       .catch((err) => {
         console.error(err);
@@ -36,12 +38,14 @@ function AppointmentOperations() {
   const handleUpdate = (e) => {
     e.preventDefault();
     const updatedData = {
-      appointment,
+      ...appointment,
+      emailType: emailType,
     };
     axios
       .put(`http://localhost:3000/api/admin/appointments/${id}`, updatedData)
       .then((res) => {
-        console.log(res.data);
+        console.log(res.data.appointment);
+        navigate("/admin/appointments");
       })
       .catch((err) => {
         console.log(err);
@@ -136,30 +140,72 @@ function AppointmentOperations() {
             </div>
           </div>
           <div className="flex gap-[10px]">
-            <label className="font-medium">Reason:</label>
+            <label className="font-medium">Description:</label>
             <p>{appointment.reason}</p>
           </div>
+        </div>
+        <div>
+          <p>Status : </p>
+          <select
+            value={appointment.status}
+            className="m-2 p-4 bg-gray-100 border-2 border-gray-300 rounded-xl text-g"
+            onChange={(e) =>
+              setAppointment({ ...appointment, status: e.target.value })
+            }
+          >
+            <option value="Pending">Pending</option>
+            <option value="Rescheduled">Reschedule</option>
+            <option value="Accepted">Accepted</option>
+            <option value="Cancelled">Cancel</option>
+          </select>
         </div>
       </div>
       {/* email */}
       <hr />
-      <div className="p-4">
+      {/* <div className="p-4">
         <p className="text-zinc-600 my-2 font-medium text-lg">
-          Email status type
+          Send Appointment status by Email :
         </p>
         <hr />
-        <button className="p-4 m-2 text-lg rounded bg-green-400 py-2 px-8 text-white">
-          Accept
-        </button>
-        <button className="p-4 m-2 text-lg rounded bg-orange-400 py-2 px-8 text-white">
-          Re-schedule
-        </button>
-        <button className="p-4 m-2 text-lg rounded bg-red-400 py-2 px-8 text-white">
-          Cancel
-        </button>
-        <button className="p-4 m-2 text-lg rounded bg-gray-300 py-2 px-8 text-white">
-          Custom
-        </button>
+        <div className="p-4 flex flex-col gap-[30px] items-start">
+          <div className="flex gap-[10px]">
+            <input type="checkbox" name="emailType" value={"default"} />
+            <label className="font-medium text-gray-600">Default</label>
+          </div>
+          <div className="w-[90%] flex flex-col gap-[10px] items-center">
+            <label className="font-medium text-gray-500">
+              Custom ( Don't select default for custom mail )
+            </label>
+            <textarea
+              type="text"
+              name="emailType"
+              value={custom}
+              onChange={(e) => setCustom(e.target.value)}
+              className="bg-gray-100 min-h-8 max-h-32 p-4 rounded w-full"
+            />
+          </div>
+        </div>
+      </div> */}
+      <div className="p-4">
+        <p className="font-medium text-lg text-gray-600 m-2">Send Email</p>
+        <div className="flex gap-[10px] text-lg">
+          <input
+            type="radio"
+            name="emailType"
+            onChange={(e) => setEmailType(e.target.value)}
+            value="Yes"
+          />
+          <label className="text-gray-600">Yes</label>
+        </div>
+        <div className="flex gap-[10px] text-lg">
+          <input
+            type="radio"
+            name="emailType"
+            onChange={(e) => setEmailType(e.target.value)}
+            value="No"
+          />
+          <label className="text-gray-600">No</label>
+        </div>
       </div>
       <div className="p-4 flex items-center justify-center w-full h-32">
         <button className="text-xl bg-green-900 text-white p-4 px-8 rounded-xl border-2 border-green-900 hover:text-green-900 hover:bg-transparent">
