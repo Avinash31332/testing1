@@ -10,14 +10,14 @@ import EditData from "./pages/EditData";
 import UsesNaturopathy from "./components/UsesNaturopathy";
 import AdminAppointments from "./pages/AdminAppointments";
 import AppointmentOperations from "./pages/AppointmentOperations";
-import CreateAppointment from "./pages/createAppointment";
+import CreateAppointment from "./pages/CreateAppointment";
 import AdminDashboard from "./pages/AdminDashboard";
 import Policies from "./pages/Policies";
 import Faq from "./pages/Faq";
 import ContactUs from "./components/ContactUs";
 import ProtectedRoutes from "./utils/ProtectedRoutes";
 import Admin from "./pages/Admin";
-import CreateFaq from "./pages/createFaq";
+import CreateFaq from "./pages/CreateFaq";
 import EditFaq from "./pages/EditFaq";
 function App() {
   return (
