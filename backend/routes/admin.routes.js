@@ -47,59 +47,31 @@ router.put("/therapies/:id", adminAuth, updateTherapy);
 router.delete("/therapies/:id", adminAuth, deleteTherapy);
 
 //data editable routes
-router.get("/data", adminAuth, async (req, res) => {
-  try {
-    const aboutData = await dataModel.find();
-    return res.status(200).json(aboutData);
-  } catch (err) {
-    return res.status(500).json({
-      message: "Error in fetching data",
-      error: err,
-    });
-  }
-});
 
-router.get("/data", adminAuth, async (req, res) => {
-  try {
-    const aboutData = await dataModel.find();
-    return res.status(200).json(aboutData);
-  } catch (err) {
-    return res.status(500).json({
-      message: "Error in fetching data",
-      error: err,
-    });
-  }
-});
-
-router.post("/data", adminAuth, async (req, res) => {
-  // const { aboutTitle, aboutDescription } = req.body;
-  // const data = dataModel.findOne();
-  return res.status(404).json({
-    message: "No new data can be created",
-  });
-});
-
-router.put("/data/:id", adminAuth, async (req, res) => {
+router.put("/data", adminAuth, async (req, res) => {
   try {
     const { aboutTitle, aboutDescription } = req.body;
-    const aboutData = await dataModel.findByIdAndUpdate(
-      "67968600c96441fa12b9f6c7",
+
+    const existingData = await dataModel.findOne();
+    if (!existingData)
+      return res.status(404).json({ message: "Data not found" });
+
+    const updatedData = await dataModel.findByIdAndUpdate(
+      existingData._id,
       {
-        about: {
-          aboutTitle,
-          aboutDescription,
+        $set: {
+          "about.aboutTitle": aboutTitle,
+          "about.aboutDescription": aboutDescription,
         },
       },
-      { new: true }
+      { new: true, runValidators: true }
     );
-    if (!aboutData) {
-      return res.status(404).json({ message: "Data not found" });
-    }
-    return res.status(200).json(aboutData);
+
+    return res.status(200).json(updatedData);
   } catch (err) {
     return res.status(500).json({
       message: "Error in updating data",
-      error: err,
+      error: err.message,
     });
   }
 });

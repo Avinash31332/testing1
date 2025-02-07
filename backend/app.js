@@ -22,7 +22,7 @@ app.use(cookieParser());
 const allowedOrigins = [
   "http://localhost:5173", // React/Vite frontend
   "http://localhost:5174", // Another frontend (if needed)
-  "https://your-production-domain.com", // Production frontend
+  "https://testing1-dsbj.onrender.com", // Production frontend
 ];
 
 app.use(
