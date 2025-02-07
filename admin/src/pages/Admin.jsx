@@ -56,7 +56,9 @@ function AdminLogin() {
   }
   return (
     <div>
-      <button onClick={handleToggle}>Toggle</button>
+      <button onClick={(e) => setLogin(false)} className="gotoBtn">
+        Register
+      </button>
       {login ? (
         <div className="h-screen w-full flex items-center justify-center bg-gray-100">
           <form
@@ -108,6 +110,9 @@ function AdminLogin() {
         </div>
       ) : (
         <div className="h-screen w-full flex items-center justify-center bg-gray-100">
+          <button className="gotoBtn" onClick={(e) => setLogin(true)}>
+            Go to Login
+          </button>
           <form
             onSubmit={handleRegister}
             className="flex justify-center items-center w-full"
