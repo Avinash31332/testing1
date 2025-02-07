@@ -18,7 +18,9 @@ function Faq() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/api/faq", { withCredentials: true })
+      .get("https://testing1-backend.onrender.com/api/faq", {
+        withCredentials: true,
+      })
       .then((res) => {
         setDatas(res.data);
       })

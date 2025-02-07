@@ -26,7 +26,7 @@ function About() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3000/api/data`)
+      .get(`https://testing1-backend.onrender.com/api/data`)
       .then((res) => {
         setData(res.data.about);
       })

@@ -24,7 +24,7 @@ function EditData() {
     const handleResize = () => setIsSmallScreen(window.innerWidth <= 570);
     window.addEventListener("resize", handleResize);
 
-    axios.get(`http://localhost:3000/api/data`).then((res) => {
+    axios.get(`https://testing1-backend.onrender.com/api/data`).then((res) => {
       setData(res.data);
       setAboutTitle(res.data.about.aboutTitle);
       setAboutDescription(res.data.about.aboutDescription);
@@ -46,7 +46,7 @@ function EditData() {
       aboutDescription: aboutDescription,
     };
     axios
-      .put(`http://localhost:3000/api/admin/data`, newData, {
+      .put(`https://testing1-backend.onrender.com/api/admin/data`, newData, {
         withCredentials: true,
       })
       .then(() => {

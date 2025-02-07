@@ -24,7 +24,7 @@ const TherapiesSlider = () => {
   // Fetch data from the API
   useEffect(() => {
     axios
-      .get("http://localhost:3000/api/therapies")
+      .get("https://testing1-backend.onrender.com/api/therapies")
       .then((res) => {
         setTherapies(res.data.data); // Assuming `res.data` contains an array of therapies
       })

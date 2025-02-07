@@ -22,7 +22,7 @@ function CreateTherapy() {
     const data = { name, description, image };
 
     axios
-      .post("http://localhost:3000/api/admin/therapies", data, {
+      .post("https://testing1-backend.onrender.com/api/admin/therapies", data, {
         withCredentials: true,
       })
       .then(() => {

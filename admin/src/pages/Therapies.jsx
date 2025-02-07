@@ -34,8 +34,8 @@ function Therapies() {
   // Fetch therapies data
   useEffect(() => {
     const url = id
-      ? `http://localhost:3000/api/therapies/${id}`
-      : `http://localhost:3000/api/therapies`;
+      ? `https://testing1-backend.onrender.com/api/therapies/${id}`
+      : `https://testing1-backend.onrender.com/api/therapies`;
 
     axios
       .get(url, { withCredentials: true })

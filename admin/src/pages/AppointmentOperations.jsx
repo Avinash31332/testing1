@@ -16,9 +16,12 @@ function AppointmentOperations() {
   useEffect(() => {
     setLoading(true);
     axios
-      .get(`http://localhost:3000/api/admin/appointments/${id}`, {
-        withCredentials: true,
-      })
+      .get(
+        `https://testing1-backend.onrender.com/api/admin/appointments/${id}`,
+        {
+          withCredentials: true,
+        }
+      )
       .then((res) => {
         setAppointment(res.data);
         setLoading(false);
@@ -44,9 +47,13 @@ function AppointmentOperations() {
       emailType: emailType,
     };
     axios
-      .put(`http://localhost:3000/api/admin/appointments/${id}`, updatedData, {
-        withCredentials: true,
-      })
+      .put(
+        `https://testing1-backend.onrender.com/api/admin/appointments/${id}`,
+        updatedData,
+        {
+          withCredentials: true,
+        }
+      )
       .then((res) => {
         console.log(res.data.appointment);
         navigate("/admin/appointments");

@@ -19,7 +19,7 @@ function EditFaq() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3000/api/admin/faq/${id}`, {
+      .get(`https://testing1-backend.onrender.com/api/admin/faq/${id}`, {
         withCredentials: true,
       })
       .then((res) => {
@@ -36,7 +36,7 @@ function EditFaq() {
     const data = { question, answer };
 
     axios
-      .put(`http://localhost:3000/api/admin/faq/${id}`, data, {
+      .put(`https://testing1-backend.onrender.com/api/admin/faq/${id}`, data, {
         withCredentials: true,
       })
       .then(() => {
@@ -48,7 +48,7 @@ function EditFaq() {
     const ok = window.confirm("Do you want to delete this question ?");
     if (ok) {
       axios
-        .delete(`http://localhost:3000/api/admin/faq/${id}`, {
+        .delete(`https://testing1-backend.onrender.com/api/admin/faq/${id}`, {
           withCredentials: true,
         })
         .then(() => {

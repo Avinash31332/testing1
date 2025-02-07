@@ -22,7 +22,7 @@ function TherapyOperations() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3000/api/therapies/${id}`, {
+      .get(`https://testing1-backend.onrender.com/api/therapies/${id}`, {
         withCredentials: true,
       })
       .then((res) => {
@@ -52,9 +52,13 @@ function TherapyOperations() {
     };
 
     axios
-      .put(`http://localhost:3000/api/admin/therapies/${id}`, data, {
-        withCredentials: true,
-      })
+      .put(
+        `https://testing1-backend.onrender.com/api/admin/therapies/${id}`,
+        data,
+        {
+          withCredentials: true,
+        }
+      )
       .then(() => {
         navigate("/therapies");
       })
@@ -67,9 +71,12 @@ function TherapyOperations() {
     const ok = window.confirm("Do you want to delete?");
     if (ok) {
       axios
-        .delete(`http://localhost:3000/api/admin/therapies/${id}`, {
-          withCredentials: true,
-        })
+        .delete(
+          `https://testing1-backend.onrender.com/api/admin/therapies/${id}`,
+          {
+            withCredentials: true,
+          }
+        )
         .then(() => {
           navigate("/therapies");
         })

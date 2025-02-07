@@ -21,7 +21,7 @@ function CreateFaq() {
     const data = { question, answer };
 
     axios
-      .post("http://localhost:3000/api/admin/faq", data, {
+      .post("https://testing1-backend.onrender.com/api/admin/faq", data, {
         withCredentials: true,
       })
       .then(() => {

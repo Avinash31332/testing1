@@ -19,7 +19,7 @@ import BookComponent from "../components/BookComponent";
 
 const Home = () => {
   return (
-    <div>
+    <div className="overflow-x-hidden">
       <HeroSection />
       <About />
       <hr />

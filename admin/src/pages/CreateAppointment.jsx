@@ -39,7 +39,10 @@ const CreateAppointment = () => {
     };
 
     axios
-      .post("http://localhost:3000/api/appointments/book", formattedData)
+      .post(
+        "https://testing1-backend.onrender.com/api/appointments/book",
+        formattedData
+      )
       .then(() => navigate("/"))
       .catch((err) => console.log(err));
   };

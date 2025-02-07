@@ -20,7 +20,7 @@ function AdminAppointments() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/api/admin/appointments", {
+      .get("https://testing1-backend.onrender.com/api/admin/appointments", {
         withCredentials: true,
       })
       .then((res) => {

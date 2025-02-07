@@ -24,7 +24,7 @@ function AdminLogin() {
       password,
     };
     axios
-      .post("http://localhost:3000/api/admin/create", data, {
+      .post("https://testing1-backend.onrender.com/api/admin/create", data, {
         withCredentials: true,
       })
       .then((res) => {
@@ -43,7 +43,7 @@ function AdminLogin() {
       password,
     };
     axios
-      .post("http://localhost:3000/api/admin/login", data, {
+      .post("https://testing1-backend.onrender.com/api/admin/login", data, {
         withCredentials: true,
       })
       .then((res) => {
@@ -56,6 +56,7 @@ function AdminLogin() {
   }
   return (
     <div>
+      <button onClick={handleToggle}>Toggle</button>
       {login ? (
         <div className="h-screen w-full flex items-center justify-center bg-gray-100">
           <form
