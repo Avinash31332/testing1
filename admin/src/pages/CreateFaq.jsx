@@ -2,10 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-function CreateTherapy() {
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [image, setImage] = useState("");
+function CreateFaq() {
+  const [question, setQuestion] = useState("");
+  const [answer, setAnswer] = useState("");
   const [small, setSmall] = useState(window.innerWidth <= 650);
   const navigator = useNavigate();
 
@@ -17,19 +16,24 @@ function CreateTherapy() {
     };
   }, []);
 
-  const newTherapy = (e) => {
+  const newFaq = (e) => {
     e.preventDefault();
-    const data = { name, description, image };
+    const data = { question, answer };
 
-    axios.post("http://localhost:3000/api/admin/therapies", data).then(() => {
-      navigator("/therapies");
-    });
+    axios
+      .post("http://localhost:3000/api/admin/faq", data, {
+        withCredentials: true,
+      })
+      .then(() => {
+        navigator("/faq");
+      })
+      .catch((err) => console.log(err.message));
   };
 
   return (
     <div className="h-screen w-full flex items-center justify-center bg-gray-100">
       <form
-        onSubmit={newTherapy}
+        onSubmit={newFaq}
         className="flex justify-center items-center w-full"
       >
         <div
@@ -37,55 +41,41 @@ function CreateTherapy() {
             small ? "w-full max-w-md p-4" : "w-2/4 lg:w-1/4 md:max-w-lg p-8"
           }`}
         >
-          <label className="text-lg font-medium text-zinc-400">
-            Name of Therapy
-          </label>
+          <label className="text-lg font-medium text-zinc-400">Question</label>
           <input
             className="w-full p-2 m-2 bg-zinc-200 rounded-lg"
             type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Therapy Name"
+            value={question}
+            onChange={(e) => setQuestion(e.target.value)}
+            placeholder="Question"
             required
           />
           <label className="flex text-lg font-medium text-zinc-400">
-            Description (
+            Answer (
             <label className="flex text-lg font-medium text-zinc-400">
               <p
                 className={
-                  description.length <= 150
+                  answer.length <= 350
                     ? "text-green-600"
-                    : description.length <= 200
+                    : answer.length <= 450
                     ? "text-yellow-500"
-                    : description.length < 250
+                    : answer.length <= 499
                     ? "text-red-400"
                     : "text-red-600"
                 }
               >
-                {description.length}
+                {answer.length}
               </p>
-              /250)
+              /500)
             </label>
           </label>
           <textarea
             className="w-full min-h-16 max-h-32 p-2 m-2 bg-zinc-200 rounded-lg"
             type="text"
-            value={description}
-            maxLength={250}
-            onChange={(e) => setDescription(e.target.value)}
-            placeholder="Therapy Description"
-            required
-          />
-          <label className="text-lg font-medium text-zinc-400">
-            Image Link
-          </label>
-          <textarea
-            className="w-full p-2 min-h-8 max-h-16 m-2 bg-zinc-200 rounded-lg"
-            type="text"
-            value={image}
-            maxLength={250}
-            onChange={(e) => setImage(e.target.value)}
-            placeholder="Image URL"
+            value={answer}
+            maxLength={500}
+            onChange={(e) => setAnswer(e.target.value)}
+            placeholder="Answer"
             required
           />
           <button type="submit" className="gotoBtn">
@@ -98,4 +88,4 @@ function CreateTherapy() {
   );
 }
 
-export default CreateTherapy;
+export default CreateFaq;

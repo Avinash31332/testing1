@@ -3,6 +3,7 @@ import axios from "axios";
 import { useParams, Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
+import Therapy from "../components/Therapy";
 
 function Therapies() {
   const [therapies, setTherapies] = useState([]);
@@ -13,7 +14,7 @@ function Therapies() {
   );
 
   //admin
-  // const [isAdmin, setAdmin] = useState(true);
+  const [isAdmin, setAdmin] = useState(true);
 
   const { id } = useParams();
 
@@ -37,7 +38,7 @@ function Therapies() {
       : `http://localhost:3000/api/therapies`;
 
     axios
-      .get(url)
+      .get(url, { withCredentials: true })
       .then((res) => setTherapies(id ? [res.data.data] : res.data.data))
       .catch((err) => console.error(err.message));
   }, [id]);
@@ -49,6 +50,15 @@ function Therapies() {
 
   return (
     <div className="flex flex-col items-center w-full overflow-x-hidden">
+      {/* Add Therapy Button */}
+      {isAdmin ? (
+        <Link to="/admin/therapies/create">
+          <button className="gotoBtn mb-4">Add Therapy</button>
+        </Link>
+      ) : (
+        ""
+      )}
+
       {/* Search Input */}
       <input
         type="text"
@@ -63,14 +73,13 @@ function Therapies() {
       {/* Display Filtered Therapies */}
       <div className="p-4 flex flex-wrap justify-evenly">
         {filteredTherapies.map((therapy) => (
-          <Link
-            to={"/appointments/create"}
+          <div
             key={therapy._id}
-            className={`transition-all duration-[0.3s] hover:bg-gray-600 my-4 rounded-lg bg-gray-100 border border-gray-300 shadow-lg overflow-hidden ${
+            className={`my-4 rounded-lg bg-gray-100 border border-gray-300 shadow-lg overflow-hidden ${
               isSmallScreen
-                ? "min-h-[500px] w-[97%]"
+                ? "h-[500px] w-[97%]"
                 : isMidScreen
-                ? "min-h-[500px] w-[97%] "
+                ? "h-[500px] w-[97%] "
                 : "h-[400px] flex w-[45%]"
             }`}
           >
@@ -84,6 +93,19 @@ function Therapies() {
                   : "w-1/2 h-full"
               }`}
             >
+              {isAdmin ? (
+                <Link to={`/therapies/${therapy._id}`}>
+                  <button
+                    className="right-[-5px] bottom-[-5px] m-2 px-4 py-1 bg-gray-700 text-xl text-gray-200
+                rounded-lg absolute border-2 border-zinc-200"
+                  >
+                    <FontAwesomeIcon icon={faEllipsis} />
+                  </button>
+                </Link>
+              ) : (
+                ""
+              )}
+
               <img
                 src={therapy.image} // Use the correct `therapy.image` key
                 alt={therapy.name}
@@ -111,7 +133,7 @@ function Therapies() {
                 </p>
               </div>
             </div>
-          </Link>
+          </div>
         ))}
       </div>
     </div>

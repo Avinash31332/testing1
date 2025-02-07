@@ -20,7 +20,9 @@ function AdminAppointments() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/api/admin/appointments")
+      .get("http://localhost:3000/api/admin/appointments", {
+        withCredentials: true,
+      })
       .then((res) => {
         setAppointments(res.data.data || []);
       })

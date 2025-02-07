@@ -3,10 +3,10 @@ import appointmentModel from "../models/appointment.model.js";
 
 export const createAppointment = async (req, res) => {
   try {
-    const { name, email, phone, age, therapies, date, time, description } =
-      req.body;
+    //removed time -> in model i.e., in here
+    const { name, email, phone, age, therapies, date, description } = req.body;
 
-    if (!name || !email || !phone || !age || !therapies || !date || !time) {
+    if (!name || !email || !phone || !age || !date) {
       return res.status(404).json({
         message: "Please provide all the fields",
       });
@@ -18,7 +18,7 @@ export const createAppointment = async (req, res) => {
       age,
       therapies,
       date,
-      time,
+      // time,
       description,
     });
 

@@ -9,9 +9,8 @@ const CreateAppointment = () => {
     phone: "",
     age: "",
     therapies: "",
-    reason: "",
+    description: "",
     date: "",
-    time: "",
   });
 
   const navigate = useNavigate();
@@ -24,9 +23,9 @@ const CreateAppointment = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const { name, email, phone, age, therapies, reason, date, time } = formData;
+    const { name, email, phone, age, therapies, description, date } = formData;
 
-    if (!name || !email || !phone || !age || !date || !time) {
+    if (!name || !email || !phone || !age || !date) {
       alert("Please fill in all required fields.");
       return;
     }

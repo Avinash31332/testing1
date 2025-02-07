@@ -1,6 +1,9 @@
 import express from "express";
 import mongoose from "mongoose";
 import appointmentModel from "../models/appointment.model.js";
+import adminModel from "../models/admin.model.js";
+import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
 
 export const allAppointments = async (req, res) => {
   try {
@@ -43,7 +46,7 @@ export const singleAppointment = async (req, res) => {
 
 export const operationAppointment = async (req, res) => {
   try {
-    const { date, time, therapies, status, emailType } = req.body;
+    const { date, therapies, status, emailType } = req.body;
 
     // Validate ObjectId
     if (!mongoose.isValidObjectId(req.params.id)) {
@@ -58,7 +61,7 @@ export const operationAppointment = async (req, res) => {
     // Build updates dynamically
     const updates = { status: status };
     if (date) updates.date = date;
-    if (time) updates.time = time;
+    // if (time) updates.time = time;
     if (therapies) updates.therapies = therapies;
     if (emailType) updates.emailType = emailType;
 
@@ -87,4 +90,49 @@ export const operationAppointment = async (req, res) => {
       details: error.message,
     });
   }
+};
+
+export const adminCreate = async (req, res) => {
+  const { name, password } = req.body;
+  if (!name || !password)
+    return res.status(401).json({
+      message: `Please fill all the fields`,
+    });
+  try {
+    const admin = await adminModel.findOne({ name });
+    if (admin) return res.status(401).json("Admin already exist");
+    bcrypt.genSalt(10, (err, salt) => {
+      bcrypt.hash(password, salt, async (err, hash) => {
+        const newAdmin = await adminModel.create({
+          name,
+          password: hash,
+        });
+        const token = jwt.sign({ name: name }, process.env.JWT_SECRET);
+        res.cookie("adminToken", token);
+        return res.status(201).json(newAdmin);
+      });
+    });
+  } catch (err) {
+    return res.status(500).json({
+      message: "Error in creating admin",
+      err: err,
+    });
+  }
+};
+
+export const adminLogin = async (req, res) => {
+  const { name, password } = req.body;
+  if (!name || !password)
+    return res.status(401).json({
+      message: "Please provide all the fields",
+    });
+  const admin = await adminModel.findOne({ name });
+  if (!admin)
+    return res.status(404).json({
+      message: "Something went wrong",
+    });
+  const check = await bcrypt.compare(password, admin.password);
+  const token = jwt.sign({ name: admin.name }, process.env.JWT_SECRET);
+  res.cookie("adminToken", token);
+  res.send("You are logged in");
 };

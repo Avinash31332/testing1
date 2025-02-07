@@ -12,6 +12,7 @@ import HeroSection from "../components/HeroSection";
 import About from "../components/About";
 import Therapies from "./Therapies";
 import TherapiesSlider from "../components/TherapiesSlider";
+import CardsCarousel from "../components/CardsCarousel";
 
 const Home = () => {
   return (
@@ -132,6 +133,7 @@ const Home = () => {
       <TherapiesSlider />
       <hr className="my-8" />
       <About />
+      <CardsCarousel />
     </div>
   );
 };

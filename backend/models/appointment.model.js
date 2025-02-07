@@ -7,7 +7,7 @@ const appointmentSchema = new mongoose.Schema({
   age: { type: Number, required: true },
   therapies: { type: [String] }, // Array of selected therapies
   date: { type: Date, required: true },
-  time: { type: String, required: true },
+  // time: { type: String, required: true },
   status: {
     type: String,
     enum: ["Pending", "Accepted", "Rescheduled", "Cancelled"],

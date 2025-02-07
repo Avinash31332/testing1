@@ -24,7 +24,7 @@ function EditData() {
     const handleResize = () => setIsSmallScreen(window.innerWidth <= 570);
     window.addEventListener("resize", handleResize);
 
-    axios.get(`http://localhost:3000/api/admin/data/about`).then((res) => {
+    axios.get(`http://localhost:3000/api/admin/data`).then((res) => {
       setData(res.data);
       setAboutTitle(res.data[0].about.aboutTitle);
       setAboutDescription(res.data[0].about.aboutDescription);
@@ -47,10 +47,9 @@ function EditData() {
     };
     console.log(newData);
     axios
-      .put(
-        `http://localhost:3000/api/admin/data/about/67968600c96441fa12b9f6c7`,
-        newData
-      )
+      .put(`http://localhost:3000/api/admin/data`, newData, {
+        withCredentials: true,
+      })
       .then(() => {
         navigate("/");
       })

@@ -10,50 +10,44 @@ import {
   allAppointments,
   singleAppointment,
   operationAppointment,
+  adminCreate,
+  adminLogin,
 } from "../controllers/adminController.js";
-import adminModel from "../models/admin.model.js";
+import {
+  singleFaq,
+  createFaq,
+  updateFaq,
+  deleteFaq,
+} from "../controllers/faqController.js";
 import dataModel from "../models/data.model.js";
+
+//token and middleware
+import { generateAdminToken } from "../utils/generateToken.js";
+import { adminAuth } from "../middleware/authMiddleware.js";
+import jwt from "jsonwebtoken";
+
 const router = express.Router();
 
-router.get("/", async (req, res) => {
-  const admin = await adminModel.find();
-  res.status(200).json(admin);
-});
-
-router.post("/update/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { pin } = req.body;
-    const admin = await adminModel.findByIdAndUpdate(id, { pin: pin });
-    return res.status(200).json(admin);
-  } catch (err) {
-    res.status(500).json({
-      message: "Error in creating admin",
-      error: err,
-    });
-  }
-});
-
 //appointments
-router.get("/appointments", allAppointments);
+router.get("/appointments", adminAuth, allAppointments);
 
-router.get("/appointments/:id", singleAppointment);
+router.get("/appointments/:id", adminAuth, singleAppointment);
 
-router.put("/appointments/:id", operationAppointment);
+router.put("/appointments/:id", adminAuth, operationAppointment);
 
 //therapies
-router.get("/therapies", allTherapies);
+router.get("/therapies", adminAuth, allTherapies);
 
-router.get("/therapies/:id", getTherapy);
+router.get("/therapies/:id", adminAuth, getTherapy);
 
-router.post("/therapies", createTherapy);
+router.post("/therapies", adminAuth, createTherapy);
 
-router.put("/therapies/:id", updateTherapy);
+router.put("/therapies/:id", adminAuth, updateTherapy);
 
-router.delete("/therapies/:id", deleteTherapy);
+router.delete("/therapies/:id", adminAuth, deleteTherapy);
 
 //data editable routes
-router.get("/data/about", async (req, res) => {
+router.get("/data", adminAuth, async (req, res) => {
   try {
     const aboutData = await dataModel.find();
     return res.status(200).json(aboutData);
@@ -65,10 +59,9 @@ router.get("/data/about", async (req, res) => {
   }
 });
 
-router.get("/data/about/:id", async (req, res) => {
+router.get("/data", adminAuth, async (req, res) => {
   try {
-    const { id } = req.params;
-    const aboutData = await dataModel.findOne(id);
+    const aboutData = await dataModel.find();
     return res.status(200).json(aboutData);
   } catch (err) {
     return res.status(500).json({
@@ -78,13 +71,15 @@ router.get("/data/about/:id", async (req, res) => {
   }
 });
 
-router.post("/data/about", (req, res) => {
+router.post("/data", adminAuth, async (req, res) => {
+  // const { aboutTitle, aboutDescription } = req.body;
+  // const data = dataModel.findOne();
   return res.status(404).json({
     message: "No new data can be created",
   });
 });
 
-router.put("/data/about/67968600c96441fa12b9f6c7", async (req, res) => {
+router.put("/data/:id", adminAuth, async (req, res) => {
   try {
     const { aboutTitle, aboutDescription } = req.body;
     const aboutData = await dataModel.findByIdAndUpdate(
@@ -108,5 +103,27 @@ router.put("/data/about/67968600c96441fa12b9f6c7", async (req, res) => {
     });
   }
 });
+
+router.post("/create", adminCreate);
+
+router.post("/login", adminLogin);
+
+router.get("/logout", (req, res) => {
+  res.clearCookie("adminToken");
+  return res.status(200).json({ message: "Logged out successfully" });
+});
+
+//faq routes
+//get single faq
+router.get("/faq/:id", adminAuth, singleFaq);
+
+// Create FAQ
+router.post("/faq", adminAuth, createFaq);
+
+// Update FAQ
+router.put("/faq/:id", adminAuth, updateFaq);
+
+// Delete FAQ
+router.delete("/faq/:id", adminAuth, deleteFaq);
 
 export default router;

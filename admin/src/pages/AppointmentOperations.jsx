@@ -16,7 +16,9 @@ function AppointmentOperations() {
   useEffect(() => {
     setLoading(true);
     axios
-      .get(`http://localhost:3000/api/admin/appointments/${id}`)
+      .get(`http://localhost:3000/api/admin/appointments/${id}`, {
+        withCredentials: true,
+      })
       .then((res) => {
         setAppointment(res.data);
         setLoading(false);
@@ -42,7 +44,9 @@ function AppointmentOperations() {
       emailType: emailType,
     };
     axios
-      .put(`http://localhost:3000/api/admin/appointments/${id}`, updatedData)
+      .put(`http://localhost:3000/api/admin/appointments/${id}`, updatedData, {
+        withCredentials: true,
+      })
       .then((res) => {
         console.log(res.data.appointment);
         navigate("/admin/appointments");
@@ -93,7 +97,7 @@ function AppointmentOperations() {
 
         {/* Requested Timings */}
         <div>
-          <p className="text-zinc-600 font-medium text-lg">Requested Timings</p>
+          <p className="text-zinc-600 font-medium text-lg">Requested Date</p>
           <div className="flex gap-[10px]">
             <label className="font-medium">Date:</label>
             {/* <p>{formatDate(appointment.date)}</p> */}
@@ -107,18 +111,6 @@ function AppointmentOperations() {
               }
               onChange={(e) =>
                 setAppointment({ ...appointment, date: e.target.value })
-              }
-            />
-          </div>
-          <div className="flex gap-[10px]">
-            <label className="font-medium">Time:</label>
-            <p>{formatTime(appointment.time)}</p>
-            <input
-              type="time"
-              className="rounded-lg border-2 m-4 text-medium p-4"
-              value={appointment.time || ""}
-              onChange={(e) =>
-                setAppointment({ ...appointment, time: e.target.value })
               }
             />
           </div>

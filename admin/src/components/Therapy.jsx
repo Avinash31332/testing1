@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+
 function Therapy({ therapy }) {
   // State to track small screen detection
   const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 650);
@@ -23,10 +23,9 @@ function Therapy({ therapy }) {
 
   return (
     <div className="p-4 flex flex-wrap justify-evenly">
-      <Link
-        to={"/appointments/create"}
+      <div
         key={therapy._id}
-        className={`transition-all duration-[0.3s] hover:bg-gray-600 my-4 rounded-lg bg-gray-100 border border-gray-300 shadow-lg overflow-hidden ${
+        className={`my-4 rounded-lg bg-gray-100 border border-gray-300 shadow-lg overflow-hidden ${
           isSmallScreen
             ? "h-[500px] w-[97%]"
             : isMidScreen
@@ -71,7 +70,7 @@ function Therapy({ therapy }) {
             </p>
           </div>
         </div>
-      </Link>
+      </div>
     </div>
   );
 }
