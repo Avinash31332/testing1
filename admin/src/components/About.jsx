@@ -25,9 +25,14 @@ function About() {
   }, []);
 
   useEffect(() => {
-    axios.get(`http://localhost:3000/api/admin/data`).then((res) => {
-      setData(res.data[0].about);
-    });
+    axios
+      .get(`http://localhost:3000/api/data`)
+      .then((res) => {
+        setData(res.data.about);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
   }, []);
   return (
     <div
