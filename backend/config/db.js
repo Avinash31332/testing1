@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 function connectToDB() {
   mongoose
-    .connect(process.env.MONGO_URI)
+    .connect(process.env.MONGODB_ATLAS)
     .then(() => {
       console.log("Connected to DB");
     })
