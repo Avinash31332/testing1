@@ -94,45 +94,72 @@ export const operationAppointment = async (req, res) => {
 
 export const adminCreate = async (req, res) => {
   const { name, password } = req.body;
-  if (!name || !password)
-    return res.status(401).json({
-      message: `Please fill all the fields`,
-    });
+  if (!name || !password) {
+    return res.status(401).json({ message: "Please fill all the fields" });
+  }
+
   try {
     const admin = await adminModel.findOne({ name });
-    if (admin) return res.status(401).json("Admin already exist");
+    if (admin) return res.status(401).json("Admin already exists");
+
     bcrypt.genSalt(10, (err, salt) => {
       bcrypt.hash(password, salt, async (err, hash) => {
         const newAdmin = await adminModel.create({
           name,
           password: hash,
         });
-        const token = jwt.sign({ name: name }, process.env.JWT_SECRET);
-        res.cookie("adminToken", token);
-        return res.status(201).json(newAdmin);
+
+        // Generate JWT token
+        const token = jwt.sign({ name: name }, process.env.JWT_SECRET, {
+          expiresIn: "1h",
+        });
+
+        // Set cookie with correct options
+        res.cookie("adminToken", token, {
+          httpOnly: true, // Prevents JS access
+          secure: true, // Ensures it’s only sent over HTTPS
+          sameSite: "None", // Required for cross-site requests
+        });
+
+        return res.status(201).json({ message: "Admin created successfully" });
       });
     });
   } catch (err) {
-    return res.status(500).json({
-      message: "Error in creating admin",
-      err: err,
-    });
+    return res.status(500).json({ message: "Error in creating admin", err });
   }
 };
 
 export const adminLogin = async (req, res) => {
   const { name, password } = req.body;
-  if (!name || !password)
-    return res.status(401).json({
-      message: "Please provide all the fields",
+  if (!name || !password) {
+    return res.status(401).json({ message: "Please provide all the fields" });
+  }
+
+  try {
+    const admin = await adminModel.findOne({ name });
+    if (!admin) {
+      return res.status(404).json({ message: "Admin not found" });
+    }
+
+    const check = await bcrypt.compare(password, admin.password);
+    if (!check) {
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
+
+    // Generate JWT token
+    const token = jwt.sign({ name: admin.name }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
     });
-  const admin = await adminModel.findOne({ name });
-  if (!admin)
-    return res.status(404).json({
-      message: "Something went wrong",
+
+    // Set cookie with correct options
+    res.cookie("adminToken", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "None",
     });
-  const check = await bcrypt.compare(password, admin.password);
-  const token = jwt.sign({ name: admin.name }, process.env.JWT_SECRET);
-  res.cookie("adminToken", token);
-  res.send("You are logged in");
+
+    return res.status(200).json({ message: "You are logged in" });
+  } catch (err) {
+    return res.status(500).json({ message: "Error logging in", err });
+  }
 };
