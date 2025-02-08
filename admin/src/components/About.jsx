@@ -2,24 +2,25 @@ import React, { useState, useEffect } from "react";
 import GotoButton from "./GotoButton";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import { motion } from "framer-motion"; // Import Framer Motion
+import { motion } from "framer-motion"; // Import animation library
 
 function About() {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState({});
   const [loading, setLoading] = useState(true);
   const [width, setWidth] = useState(window.innerWidth);
+  const [height, setHeight] = useState(window.innerHeight);
   const [small, setSmall] = useState(window.innerWidth <= 650);
 
   const { id } = useParams();
 
   const windowDimensions = () => {
     setWidth(window.innerWidth);
+    setHeight(window.innerHeight);
     setSmall(window.innerWidth <= 650);
   };
 
   useEffect(() => {
     window.addEventListener("resize", windowDimensions);
-
     return () => {
       window.removeEventListener("resize", windowDimensions);
     };
@@ -52,52 +53,16 @@ function About() {
     >
       {loading ? (
         <div className="flex flex-col items-center justify-center h-full">
-          {/* Loading Animation */}
+          {/* Spinning Loader Animation */}
           <motion.div
-            className="flex space-x-2"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ repeat: Infinity, duration: 1 }}
-          >
-            <motion.div
-              className="w-5 h-5 bg-blue-500 rounded-full"
-              animate={{ y: [0, -10, 0] }}
-              transition={{
-                repeat: Infinity,
-                duration: 0.6,
-                ease: "easeInOut",
-              }}
-            />
-            <motion.div
-              className="w-5 h-5 bg-green-500 rounded-full"
-              animate={{ y: [0, -10, 0] }}
-              transition={{
-                repeat: Infinity,
-                duration: 0.6,
-                ease: "easeInOut",
-                delay: 0.2,
-              }}
-            />
-            <motion.div
-              className="w-5 h-5 bg-red-500 rounded-full"
-              animate={{ y: [0, -10, 0] }}
-              transition={{
-                repeat: Infinity,
-                duration: 0.6,
-                ease: "easeInOut",
-                delay: 0.4,
-              }}
-            />
-          </motion.div>
-          <p className="mt-4 text-gray-500 text-lg">Fetching details...</p>
+            className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full"
+            animate={{ rotate: 360 }}
+            transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
+          />
+          <p className="mt-4 text-gray-500 text-lg">Loading...</p>
         </div>
       ) : (
-        <motion.div
-          className="w-full"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
+        <>
           <div
             className={
               small
@@ -107,28 +72,29 @@ function About() {
           >
             <p className="uppercase">About</p>
             <h1
-              className={`font-sans ${
+              className={` font-sans 
+              ${
                 small
                   ? "text-2xl font-medium"
                   : "text-4xl font-medium italic text-zinc-700"
               }`}
             >
-              {data?.aboutTitle || "Title Unavailable"}
+              {data.aboutTitle}
             </h1>
           </div>
           <p
             className={
               small
                 ? "py-2"
-                : "px-8 leading-[40px] w-1/2 font-medium text-2xl text-gray-700"
+                : `px-8 leading-[40px] w-1/2 font-medium text-2xl text-gray-700`
             }
           >
-            {data?.aboutDescription || "Description not available."}
+            {data.aboutDescription}
             <br />
             {small ? "" : <GotoButton title="Know More" />}
           </p>
           {small ? <GotoButton title="Know More" /> : ""}
-        </motion.div>
+        </>
       )}
     </div>
   );
