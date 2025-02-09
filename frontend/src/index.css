@@ -2,6 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
+
+/* loading */
+@keyframes spin-slow {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 3s linear infinite;
+}
+
+
+
+
+
+
 .nav-container{
     backdrop-filter: blur(3px);
     background: #c5c4c4a6;
@@ -174,3 +190,40 @@
   }
   
 
+/* cards carousel */
+
+.cards-box{
+  display: flex;
+  position: relative;
+  align-items: flex-end;
+  background-size: cover;
+}
+.cards-box p{
+  position: absolute;
+  visibility: visible;
+  /* transform: translateY(100px); */
+  background-color: rgba(105, 105, 105, 0.459);
+  bottom: 0px;
+  color: white;
+  padding: 4px;
+  transition: all ease-in-out 0.3s;
+}
+.cards-box:hover p{
+  visibility: visible;
+  bottom: 0;
+  /* transform: translateY(0px); */
+  background-color: rgba(105, 105, 105, 0.693);
+  backdrop-filter: blur(3px);
+}
+
+.change{
+  transition: all ease-in-out 0.3s;
+}
+
+.change:hover{
+  background-color: rgb(2, 187, 101);
+}
+
+.insatgram:hover{
+  background: linear-gradient(135deg, #f58529, #dd2a7b, #8134af, #515bd4);
+}
