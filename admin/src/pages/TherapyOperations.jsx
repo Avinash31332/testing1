@@ -25,9 +25,7 @@ function TherapyOperations() {
   useEffect(() => {
     const fetchTherapy = async () => {
       try {
-        const response = await Axios.get(`/api/therapies/${id}`, {
-          withCredentials: true,
-        });
+        const response = await Axios.get(`/api/therapies/${id}`);
         const { name, description, image } = response.data.data;
         setTherapy(response.data.data);
         setName(name);

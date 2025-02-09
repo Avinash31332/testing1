@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Axios from "../utils/Axios";
+import Loading from "../components/Loading";
 
 const CreateAppointment = () => {
   const [formData, setFormData] = useState({
@@ -13,7 +14,7 @@ const CreateAppointment = () => {
     date: "",
     time: "",
   });
-
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -21,9 +22,8 @@ const CreateAppointment = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
     const { name, email, phone, age, therapies, description, date } = formData;
 
     if (!name || !email || !phone || !age || !date) {
@@ -33,19 +33,26 @@ const CreateAppointment = () => {
 
     const formattedData = {
       ...formData,
-      phone, // Keeping it as a string to avoid number truncation
-      age: Number(age) || "",
+      phone: phone.trim(),
+      age: Number(age),
       therapies: therapies ? therapies.split(",").map((t) => t.trim()) : [],
     };
 
-    axios
-      .post("http://localhost:3000/api/appointments/book", formattedData)
-      .then(() => navigate("/"))
-      .catch((err) => console.log(err));
+    setLoading(true);
+    try {
+      await Axios.post("/api/appointments/book", formattedData);
+      navigate("/");
+    } catch (err) {
+      console.log("Error booking appointment:", err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
+  if (loading) return <Loading />;
+
   return (
-    <div className="m-2 flex justify-center items-center h-screen">
+    <div className="mt-8 flex justify-center items-center h-screen">
       <form
         onSubmit={handleSubmit}
         className="bg-white p-6 rounded shadow-md w-96"
@@ -54,110 +61,50 @@ const CreateAppointment = () => {
           Book Appointment
         </h2>
 
-        {/* Name */}
-        <div className="mb-3">
-          <label className="block text-sm font-medium text-gray-700">
-            Name
-          </label>
-          <input
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            className="mt-1 p-2 w-full border rounded"
-            required
-          />
-        </div>
+        {[
+          { label: "Name", name: "name", type: "text" },
+          { label: "Email", name: "email", type: "email" },
+          { label: "Phone", name: "phone", type: "tel" },
+          { label: "Age", name: "age", type: "number" },
+          {
+            label: "Therapies Needed (comma-separated)",
+            name: "therapies",
+            type: "text",
+          },
+          {
+            label: "Description (optional)",
+            name: "description",
+            type: "textarea",
+          },
+          { label: "Date", name: "date", type: "date" },
+        ].map(({ label, name, type }) => (
+          <div className="mb-3" key={name}>
+            <label className="block text-sm font-medium text-gray-700">
+              {label}
+            </label>
+            {type === "textarea" ? (
+              <textarea
+                name={name}
+                value={formData[name]}
+                onChange={handleChange}
+                className="max-h-32 mt-1 p-2 w-full border rounded"
+              />
+            ) : (
+              <input
+                type={type}
+                name={name}
+                value={formData[name]}
+                onChange={handleChange}
+                className="mt-1 p-2 w-full border rounded"
+                required={name !== "description"}
+              />
+            )}
+          </div>
+        ))}
 
-        {/* Email */}
-        <div className="mb-3">
-          <label className="block text-sm font-medium text-gray-700">
-            Email
-          </label>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            className="mt-1 p-2 w-full border rounded"
-            required
-          />
-        </div>
-
-        {/* Phone */}
-        <div className="mb-3">
-          <label className="block text-sm font-medium text-gray-700">
-            Phone
-          </label>
-          <input
-            type="tel"
-            name="phone"
-            value={formData.phone}
-            onChange={handleChange}
-            className="mt-1 p-2 w-full border rounded"
-            required
-          />
-        </div>
-
-        {/* Age */}
-        <div className="mb-3">
-          <label className="block text-sm font-medium text-gray-700">Age</label>
-          <input
-            type="number"
-            name="age"
-            value={formData.age}
-            onChange={handleChange}
-            className="mt-1 p-2 w-full border rounded"
-            required
-          />
-        </div>
-
-        {/* Therapies */}
-        <div className="mb-3">
-          <label className="block text-sm font-medium text-gray-700">
-            Therapies Needed(comma-separated)
-          </label>
-          <input
-            type="text"
-            name="therapies"
-            value={formData.therapies}
-            onChange={handleChange}
-            className="mt-1 p-2 w-full border rounded"
-          />
-        </div>
-
-        {/* Description */}
-        <div className="mb-3">
-          <label className="block text-sm font-medium text-gray-700">
-            Description(optional)
-          </label>
-          <textarea
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
-            className="max-h-32 mt-1 p-2 w-full border rounded"
-          />
-        </div>
-
-        {/* Date */}
-        <div className="mb-3">
-          <label className="block text-sm font-medium text-gray-700">
-            Date
-          </label>
-          <input
-            type="date"
-            name="date"
-            value={formData.date}
-            onChange={handleChange}
-            className="mt-1 p-2 w-full border rounded"
-            required
-          />
-        </div>
-
-        {/* Submit Button */}
         <div className="w-full flex justify-center">
-          <button type="submit" className="gotoBtn">
-            Submit
+          <button type="submit" className="gotoBtn" disabled={loading}>
+            {loading ? "Booking..." : "Submit"}
           </button>
         </div>
       </form>

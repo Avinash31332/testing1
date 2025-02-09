@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const Axios = axios.create({
-  baseURL: "https://testing1-backend.onrender.com", // Replace with your actual API URL
+  baseURL: "http://localhost:3000", // Replace with your actual API URL
   headers: {
     "Content-Type": "application/json",
   },
