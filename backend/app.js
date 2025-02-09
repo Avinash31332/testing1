@@ -31,7 +31,8 @@ app.use(
       const allowedOrigins = [
         "http://localhost:5173",
         "http://localhost:5174",
-        "https://testing1-dsbj.onrender.com",
+        "https://testing1-dsbj.onrender.com", //admin-frontend
+        "https://testing1-user-frontend.onrender.com/", //user-frontend
       ];
 
       if (!origin || allowedOrigins.includes(origin)) {
