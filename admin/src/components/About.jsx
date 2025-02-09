@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import GotoButton from "./GotoButton";
-import axios from "axios";
+import Axios from "../utils/Axios";
 import { useParams } from "react-router-dom";
 import { motion } from "framer-motion"; // Import animation library
 
@@ -29,9 +29,7 @@ function About() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          "https://testing1-backend.onrender.com/api/data"
-        );
+        const response = await Axios.get("/api/data");
         setData(response.data.about || {});
       } catch (error) {
         console.error("Error fetching data:", error.message);

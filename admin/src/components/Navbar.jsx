@@ -41,10 +41,10 @@ function Navbar() {
           Therapies
         </Link>
         <Link
-          to="/contact"
-          className="nav-link hover:text-gray-600 transition duration-300"
+          to={"/admin"}
+          className="px-4 py-2 bg-gray-800 rounded-3xl text-white border-2 hover:bg-green-600"
         >
-          Contact Us
+          Admin Login
         </Link>
       </div>
 
@@ -52,12 +52,6 @@ function Navbar() {
       <div className="flex items-center">
         <Link to={"/admin/admin-dashboard"}>
           <AdminBtn />
-        </Link>
-        <Link
-          to={"/admin"}
-          className="px-4 py-2 bg-gray-800 rounded-3xl text-white border-2 hover:bg-green-600"
-        >
-          Admin Login
         </Link>
         {/* Hamburger Menu Icon for Small Screens */}
         <div className="sm:hidden ml-4">

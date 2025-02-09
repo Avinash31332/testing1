@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { useParams } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import Axios from "../utils/Axios";
+import { useParams, useNavigate } from "react-router-dom";
+import Loading from "../components/Loading";
 
 function TherapyOperations() {
   const [therapy, setTherapy] = useState({});
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [image, setImage] = useState(""); // Image state to hold file information
+  const [image, setImage] = useState("");
   const [small, setSmall] = useState(window.innerWidth <= 650);
+  const [loading, setLoading] = useState(true);
 
   const { id } = useParams();
   const navigate = useNavigate();
+
   useEffect(() => {
     const setDimensions = () => setSmall(window.innerWidth <= 650);
     window.addEventListener("resize", setDimensions);
@@ -21,70 +23,61 @@ function TherapyOperations() {
   }, []);
 
   useEffect(() => {
-    axios
-      .get(`https://testing1-backend.onrender.com/api/therapies/${id}`, {
-        withCredentials: true,
-      })
-      .then((res) => {
-        const { name, description, image } = res.data.data;
-        setTherapy(res.data.data);
+    const fetchTherapy = async () => {
+      try {
+        const response = await Axios.get(`/api/therapies/${id}`, {
+          withCredentials: true,
+        });
+        const { name, description, image } = response.data.data;
+        setTherapy(response.data.data);
         setName(name);
         setDescription(description);
         setImage(image);
-        // console.log(res.data.data);
-      })
-      .catch((err) => {
+      } catch (err) {
         console.log(err);
-      });
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchTherapy();
   }, [id]);
 
-  // const handleImageChange = (e) => {
-  //   const file = e.target.files[0];
-  //   setImage(file);
-  // };
-
-  const handleUpdate = (e) => {
+  const handleUpdate = async (e) => {
     e.preventDefault();
-    const data = {
-      name,
-      description,
-      image,
-    };
+    setLoading(true);
+    const data = { name, description, image };
 
-    axios
-      .put(
-        `https://testing1-backend.onrender.com/api/admin/therapies/${id}`,
-        data,
-        {
-          withCredentials: true,
-        }
-      )
-      .then(() => {
-        navigate("/therapies");
-      })
-      .catch((err) => {
-        console.log(err);
+    try {
+      await Axios.put(`/api/admin/therapies/${id}`, data, {
+        withCredentials: true,
       });
-  };
-
-  const handleDelete = () => {
-    const ok = window.confirm("Do you want to delete?");
-    if (ok) {
-      axios
-        .delete(
-          `https://testing1-backend.onrender.com/api/admin/therapies/${id}`,
-          {
-            withCredentials: true,
-          }
-        )
-        .then(() => {
-          navigate("/therapies");
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      navigate("/therapies");
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
     }
   };
+
+  const handleDelete = async () => {
+    const ok = window.confirm("Do you want to delete?");
+    if (ok) {
+      setLoading(true);
+      try {
+        await Axios.delete(`/api/admin/therapies/${id}`, {
+          withCredentials: true,
+        });
+        navigate("/therapies");
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
+
+  if (loading) return <Loading />;
+
   return (
     <div className="h-screen w-full flex flex-col items-center justify-center bg-gray-100">
       <form
@@ -92,7 +85,7 @@ function TherapyOperations() {
         className="flex justify-center items-center w-full"
       >
         <div
-          className={`my-16 flex flex-col items-center justify-center  border-2 border-gray-200 rounded-xl shadow-lg shadow-zinc-200 ${
+          className={`my-16 flex flex-col items-center justify-center border-2 border-gray-200 rounded-xl shadow-lg shadow-zinc-200 ${
             small ? "w-full max-w-md p-4" : "w-2/4 lg:w-1/4 md:max-w-lg p-8"
           }`}
         >
@@ -125,7 +118,7 @@ function TherapyOperations() {
               </p>
               /250)
             </label>
-          </label>
+          </label>{" "}
           <textarea
             className="w-full min-h-16 max-h-32 p-2 m-2 bg-zinc-200 rounded-lg"
             type="text"
@@ -147,14 +140,14 @@ function TherapyOperations() {
             placeholder="Image URL"
             required
           />
-          <button type="submit" className="gotoBtn">
-            Submit
+          <button type="submit" className="gotoBtn" disabled={loading}>
+            {loading ? "Submitting..." : "Submit"}
           </button>
         </div>
       </form>
       <button
         className="text-white text-lg py-2 px-16 bg-red-600 rounded"
-        onClick={(e) => handleDelete()}
+        onClick={handleDelete}
       >
         Delete
       </button>

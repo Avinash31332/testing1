@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import Axios from "../utils/Axios";
 import { useParams, Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
 import Therapy from "../components/Therapy";
+import Loading from "../components/Loading";
 
 function Therapies() {
   const [therapies, setTherapies] = useState([]);
@@ -12,6 +13,7 @@ function Therapies() {
   const [isMidScreen, setIsMidScreen] = useState(
     window.innerWidth >= 570 && window.innerWidth <= 960
   );
+  const [loading, setLoading] = useState(true);
 
   //admin
   const [isAdmin, setAdmin] = useState(true);
@@ -29,19 +31,26 @@ function Therapies() {
     const handleMidScreen = () =>
       setIsMidScreen(window.innerWidth >= 570 && window.innerWidth <= 960);
     window.addEventListener("resize", handleMidScreen);
+    return () => window.removeEventListener("resize", handleMidScreen);
   }, []);
 
   // Fetch therapies data
   useEffect(() => {
-    const url = id
-      ? `https://testing1-backend.onrender.com/api/therapies/${id}`
-      : `https://testing1-backend.onrender.com/api/therapies`;
-
-    axios
-      .get(url, { withCredentials: true })
-      .then((res) => setTherapies(id ? [res.data.data] : res.data.data))
-      .catch((err) => console.error(err.message));
+    const fetchTherapies = async () => {
+      try {
+        const url = id ? `/api/therapies/${id}` : "/api/therapies";
+        const response = await Axios.get(url, { withCredentials: true });
+        setTherapies(id ? [response.data.data] : response.data.data);
+      } catch (err) {
+        console.error(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchTherapies();
   }, [id]);
+
+  if (loading) return <Loading />;
 
   // Filter therapies based on search input
   const filteredTherapies = therapies.filter((therapy) =>
@@ -51,21 +60,17 @@ function Therapies() {
   return (
     <div className="flex flex-col items-center w-full overflow-x-hidden">
       {/* Add Therapy Button */}
-      {isAdmin ? (
+      {isAdmin && (
         <Link to="/admin/therapies/create">
           <button className="gotoBtn mb-4">Add Therapy</button>
         </Link>
-      ) : (
-        ""
       )}
 
       {/* Search Input */}
       <input
         type="text"
         placeholder="Search therapies..."
-        className="bg-zinc-200 w-[80%] p-2 rounded-lg my-4 focus:outline-2 focus:outline-offset-2 focus:outline-green-400 border-0
-        transition-all ease-in-out duration-300
-        "
+        className="bg-zinc-200 w-[80%] p-2 rounded-lg my-4 focus:outline-2 focus:outline-offset-2 focus:outline-green-400 border-0 transition-all ease-in-out duration-300"
         value={search}
         onChange={(e) => setSearch(e.target.value)}
       />
@@ -93,21 +98,16 @@ function Therapies() {
                   : "w-1/2 h-full"
               }`}
             >
-              {isAdmin ? (
+              {isAdmin && (
                 <Link to={`/therapies/${therapy._id}`}>
-                  <button
-                    className="right-[-5px] bottom-[-5px] m-2 px-4 py-1 bg-gray-700 text-xl text-gray-200
-                rounded-lg absolute border-2 border-zinc-200"
-                  >
+                  <button className="right-[-5px] bottom-[-5px] m-2 px-4 py-1 bg-gray-700 text-xl text-gray-200 rounded-lg absolute border-2 border-zinc-200">
                     <FontAwesomeIcon icon={faEllipsis} />
                   </button>
                 </Link>
-              ) : (
-                ""
               )}
 
               <img
-                src={therapy.image} // Use the correct `therapy.image` key
+                src={therapy.image}
                 alt={therapy.name}
                 className="object-cover rounded-lg"
                 style={{ width: "100%", height: "100%" }}

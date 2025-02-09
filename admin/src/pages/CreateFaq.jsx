@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import Axios from "../utils/Axios";
+import Loading from "../components/Loading";
 
 function CreateFaq() {
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
   const [small, setSmall] = useState(window.innerWidth <= 650);
+  const [loading, setLoading] = useState(false);
   const navigator = useNavigate();
 
   useEffect(() => {
@@ -16,19 +18,24 @@ function CreateFaq() {
     };
   }, []);
 
-  const newFaq = (e) => {
+  const newFaq = async (e) => {
     e.preventDefault();
+    setLoading(true);
     const data = { question, answer };
 
-    axios
-      .post("https://testing1-backend.onrender.com/api/admin/faq", data, {
+    try {
+      await Axios.post("/api/admin/faq", data, {
         withCredentials: true,
-      })
-      .then(() => {
-        navigator("/faq");
-      })
-      .catch((err) => console.log(err.message));
+      });
+      navigator("/faq");
+    } catch (err) {
+      console.log(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
+
+  if (loading) return <Loading />;
 
   return (
     <div className="h-screen w-full flex items-center justify-center bg-gray-100">
@@ -37,7 +44,7 @@ function CreateFaq() {
         className="flex justify-center items-center w-full"
       >
         <div
-          className={`flex flex-col items-center justify-center  border-2 border-gray-200 rounded-xl shadow-lg shadow-zinc-200 ${
+          className={`flex flex-col items-center justify-center border-2 border-gray-200 rounded-xl shadow-lg shadow-zinc-200 ${
             small ? "w-full max-w-md p-4" : "w-2/4 lg:w-1/4 md:max-w-lg p-8"
           }`}
         >
@@ -78,12 +85,11 @@ function CreateFaq() {
             placeholder="Answer"
             required
           />
-          <button type="submit" className="gotoBtn">
-            Submit
+          <button type="submit" className="gotoBtn" disabled={loading}>
+            {loading ? "Submitting..." : "Submit"}
           </button>
         </div>
       </form>
-      <button></button>
     </div>
   );
 }

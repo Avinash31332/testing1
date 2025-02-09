@@ -9,7 +9,7 @@ const CreateAppointment = () => {
     phone: "",
     age: "",
     therapies: "",
-    reason: "",
+    description: "",
     date: "",
     time: "",
   });
@@ -39,10 +39,7 @@ const CreateAppointment = () => {
     };
 
     axios
-      .post(
-        "https://testing1-backend.onrender.com/api/appointments/book",
-        formattedData
-      )
+      .post("http://localhost:3000/api/appointments/book", formattedData)
       .then(() => navigate("/"))
       .catch((err) => console.log(err));
   };
@@ -135,7 +132,7 @@ const CreateAppointment = () => {
             Description(optional)
           </label>
           <textarea
-            name="reason"
+            name="description"
             value={formData.description}
             onChange={handleChange}
             className="max-h-32 mt-1 p-2 w-full border rounded"
